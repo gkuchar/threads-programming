@@ -14,19 +14,19 @@ typedef struct{
 } parameters;
 
 void *sort(void *param) {
-    parameters *p = (parameters*)param;
-    int start = p->start;
-    int end = p->end;
-    for (int i = start; i <= end; i++) {
-      for (int j = start; j < end - (i - start); j++) {
-        if (in_arr[j] > in_arr[j + 1]) {
-          int tmp = in_arr[j];
-          in_arr[j] = in_arr[j + 1];
-          in_arr[j + 1] = tmp;
-        }
+  parameters *p = (parameters*)param;
+  int start = p->start;
+  int end = p->end;
+  for (int i = start; i <= end; i++) {
+    for (int j = start; j < end - (i - start); j++) {
+      if (in_arr[j] > in_arr[j + 1]) {
+        int tmp = in_arr[j];
+        in_arr[j] = in_arr[j + 1];
+        in_arr[j + 1] = tmp;
       }
     }
-    return nullptr;
+  }
+  return nullptr;
 }
 
 void *merge(void *param) {
