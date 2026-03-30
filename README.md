@@ -1,26 +1,25 @@
 # Pthread Programming
 ## Operating Systems
-## Due March XX by 23:59
+## Due March 30 by 23:59
 
-In this project, you will complete three pthread programs.  The first program is a sudoku validator.  The second program is a sorting program that uses threads.  The third program is a Monte Carlo Pi estimator.  By completing these programs, you will gain confidence in writing pthread programs necessary for the next project.
+In this project, you will complete four pthread programs.  The first program is a sudoku validator.  The second program is a sorting program that uses threads.  The third program is a Monte Carlo Pi estimator.  The fourth program is a integer identifier.  By completing these programs, you will gain confidence in writing pthread programs necessary for the next project.
 
 # Logistics
 - This project is worth 100 points.
 - This is an individual assignment.  I will be checking your source code using MOSS against other programs on GitHub, CoPilot, ChatGPT, etc. as well as other students.  **[Click here for the MOSS site.](https://theory.stanford.edu/~aiken/moss/)**
-- Each of your programs must be written in C/C++.  The use of the standard template library is permitted.
+- Each of your programs must be written in C++.  The use of the standard template library is permitted.
 - Each program subdirectory has a `Makefile` supplied.  Additional targets have been added to clean your source code subdirectory and another target to test your program.
-- Your source code file is `pthsv.cpp`, `pthsort.cpp`, and `pthpi.cpp`.
-- The name of your executable must be `pthsv`, `pthsort`, and `pthpi`.
+- Your source code file is `pthsv.cpp`, `pthsort.cpp`, `pthpi.cpp`, and `pthii.cpp.
+- The name of your executable must be `pthsv`, `pthsort`, `pthpi`, and `pthii`.
 - Your program must be well documented. (10 points)
 - Your program must be well structured.  Programs that are all in `main()` or have excessively long functions will result in loss of points.
 - 
-- Your program will be tested on `lovelace.cs.tcu.edu` (Ubuntu Server 22.04 LTS).
+- Your program will be tested on `babbage.cs.tcu.edu` (Ubuntu Server 24.04 LTS).
 - Keep your program up-to-date using git.
 - The test cases included with this project are the minimum test cases for submission.  Note: I may test your program with other test cases.
-- Create your own `Makefile` for the Monte Carlo problem.
 
 
-# Sudoku Validator (30 points)
+# Sudoku Validator (25 points)
 A Sudoku puzzle uses a 9 × 9 grid in which each column and row, as well as each of the nine 3 × 3 subgrids, must contain all of the digits 1..9. The figure below presents an example of a valid Sudoku puzzle. This project consists of designing a multithreaded application that determines whether the solution to a Sudoku puzzle is valid.
 ```text
 6 2 4 5 3 9 1 8 7
@@ -36,8 +35,8 @@ A Sudoku puzzle uses a 9 × 9 grid in which each column and row, as well as each
 
 There are several different ways of multithreading this application. One suggested strategy is to create threads that check the following criteria:
 
-+ A thread to check that each column contains the digits 1 through 9
-+ A thread to check that each row contains the digits 1 through 9
++ One thread to check that each column contains the digits 1 through 9
++ One thread to check that each row contains the digits 1 through 9
 + Nine threads to check that each of the 3 × 3 subgrids contains the digits 1 through 9
 
 This would result in a total of eleven separate threads for validating a Sudoku puzzle. However, you are welcome to create even more threads for this project. For example, rather than creating one thread that checks all nine columns, you could create nine separate threads and have each of them check one column.
@@ -48,8 +47,7 @@ The parent thread will create the worker threads, passing each worker the locati
 
 ```c
 /* structure for passing data to threads */
-typedef struct
-{
+typedef struct{
     int row;
     int column;
 } parameters;
@@ -78,7 +76,7 @@ Output will be either `TRUE` or `FALSE` followed by a newline to standard output
 If the number of command line arguments is not correct, then output the message to standard error `usage: pthsv <file>`, followed by a newline. Set the exit code to 1, and exit your program.  If the file does not exist, then output the message to standard error `file <filename> does not exist`, followed by a newline.  Set the exit code to 1, and exit your program.
 
 
-# Multithreaded Sorting Application (30 points)
+# Multithreaded Sorting Application (25 points)
 
 Write a multithreaded sorting program that works as follows: A list of integers is divided into two smaller lists of equal size. Two separate threads (which we will term sorting threads) sort each sublist using a sorting algorithm of your choice. The two sublists are then merged by a third thread — a merging thread — which merges the two sublists into a single sorted list.
 
@@ -111,7 +109,7 @@ Output will be the sorted array of integers with one integer per line printed to
 
 If the number of command line arguments is not correct, then output the message to standard error `usage: pthsort <file>`, followed by a newline. Set the exit code to 1, and exit your program.  If the file does not exist, then output the message to standard error `file <filename> does not exist`, followed by a newline.  Set the exit code to 1, and exit your program.
 
-# Monte Carlo Pi Estimator (30 points)
+# Monte Carlo Pi Estimator (25 points)
 
 Suppose we toss darts randomly at a square dartboard, whose bullseye is at the origin, and whose sides are 2 feet in length.  Suppose also that tthere is a circle inscribed in the square dartboard.  The radius of the circle is 1 foot, and its area is $\pi$ square feet.  If the points that are hit by the darts are uniformly distributed (and we always hit the square), then the number of darts that hit inside the circle should approximately satisfy the equation $\frac{number in circle}{total number of tosses} = \frac{\pi}{4}$ since the ratio of the area of the circle to the area of the square is $\frac{\pi}{4}$.
 
@@ -147,3 +145,25 @@ Final Estimation of Pi:     3.0916
 Machine Value of Pi:        3.141592653589793
 ```
 
+
+
+# Integer Identifier (25 points)
+
+Write a program that accepts an unspecified number of integers (only integers) from the command line.  The `main()` function in this program will create four threads each running separate thread functions (negative, zero, not_prime, prime).  The threads should take turns printing their respective tokens supplied on the command line.  The negative thread should print all integers that are $<0$.  The zero thread should print all integers that are $=0$.  The not_prime thread should print out all integers that are not prime.  The prime thread should print out all the integers that are prime.  Note that the main thread will output nothing – the output will be performed by the threads that `main()` creates.  The order of integers on the command line should not be changed in the output.  Your program should work for any list of integers of any reasonable length, not just the one given in the example.  Here is an example:
+
+```text
+babbage$ ./pthii 4 -5 3 -1 2 0 1 
+NOT PRIME:  4
+ NEGATIVE: -5
+    PRIME:  3
+ NEGATIVE: -1
+    PRIME:  2 
+     ZERO:  0
+NOT PRIME:  1
+babbage$
+\end{verbatim}
+```
+
+NOTE:  I will only test your program with integers.
+
+NOTE:  Note: For this problem you are *not permitted* to use synchronization primitives such as mutexes or semaphores for thread coordination.  You can use sched_yield() to relinquish control of the CPU.  
